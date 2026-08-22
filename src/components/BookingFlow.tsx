@@ -110,7 +110,7 @@ export default function BookingFlow() {
                     setBookingData({ ...bookingData, providerId: p.id });
                     nextStep();
                   }}
-                  className={`p-4 text-left border transition-all ${
+                  className={`p-4 text-left border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm ${
                     bookingData.providerId === p.id ? 'border-accent-primary bg-accent-primary/5' : 'border-neutral/20 hover:border-accent-primary'
                   }`}
                 >
@@ -133,7 +133,7 @@ export default function BookingFlow() {
                     setBookingData({ ...bookingData, serviceId: s.id });
                     nextStep();
                   }}
-                  className={`p-4 text-left border transition-all ${
+                  className={`p-4 text-left border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm ${
                     bookingData.serviceId === s.id ? 'border-accent-primary bg-accent-primary/5' : 'border-neutral/20 hover:border-accent-primary'
                   }`}
                 >
@@ -172,7 +172,7 @@ export default function BookingFlow() {
                         setBookingData({ ...bookingData, slot });
                         nextStep();
                       }}
-                      className="p-3 text-center border border-neutral/20 hover:border-accent-primary text-sm font-sans transition-colors"
+                      className="p-3 text-center border border-neutral/20 hover:border-accent-primary text-sm font-sans transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm"
                     >
                       {format(slot.start, 'HH:mm')}
                     </button>
@@ -194,7 +194,7 @@ export default function BookingFlow() {
                 <label className="text-xs font-mono uppercase text-neutral">Full Name</label>
                 <input
                   type="text"
-                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary"
+                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary focus-visible:ring-2 focus-visible:ring-accent-primary/20"
                   value={bookingData.patient.name}
                   onChange={e => setBookingData({ ...bookingData, patient: { ...bookingData.patient, name: e.target.value } })}
                 />
@@ -203,7 +203,7 @@ export default function BookingFlow() {
                 <label className="text-xs font-mono uppercase text-neutral">Email</label>
                 <input
                   type="email"
-                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary"
+                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary focus-visible:ring-2 focus-visible:ring-accent-primary/20"
                   value={bookingData.patient.email}
                   onChange={e => setBookingData({ ...bookingData, patient: { ...bookingData.patient, email: e.target.value } })}
                 />
@@ -212,7 +212,7 @@ export default function BookingFlow() {
                 <label className="text-xs font-mono uppercase text-neutral">Phone</label>
                 <input
                   type="tel"
-                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary"
+                  className="w-full p-3 border border-neutral/20 outline-none focus:border-accent-primary focus-visible:ring-2 focus-visible:ring-accent-primary/20"
                   value={bookingData.patient.phone}
                   onChange={e => setBookingData({ ...bookingData, patient: { ...bookingData.patient, phone: e.target.value } })}
                 />

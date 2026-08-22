@@ -25,10 +25,10 @@ export default function Footer() {
         <div>
           <h4 className="text-xs font-mono uppercase tracking-widest text-neutral mb-4">Quick Links</h4>
           <nav className="flex flex-col gap-2 text-sm font-sans text-foreground/70">
-            <Link href="/services" className="hover:text-foreground transition-colors">All Services</Link>
-            <Link href="/providers" className="hover:text-foreground transition-colors">Our Providers</Link>
-            <Link href="/reviews" className="hover:text-foreground transition-colors">Patient Reviews</Link>
-            <Link href="/contact" className="hover:text-foreground transition-colors">Contact Us</Link>
+            <Link href="/services" className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm">All Services</Link>
+            <Link href="/providers" className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm">Our Providers</Link>
+            <Link href="/reviews" className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm">Patient Reviews</Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm">Contact Us</Link>
           </nav>
         </div>
       </div>
@@ -38,3 +38,4 @@ export default function Footer() {
     </footer>
   );
 }
+
