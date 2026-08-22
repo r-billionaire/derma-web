@@ -3,7 +3,14 @@
     "allow": [
       "PowerShell(New-Item *)",
       "PowerShell(npm run *)",
-      "PowerShell(git *)"
+      "PowerShell(git *)",
+      "mcp__supabase__list_organizations",
+      "mcp__supabase__create_project",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__execute_sql",
+      "PowerShell(npm install *)",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_publishable_keys"
     ]
   },
   "enabledMcpjsonServers": [
