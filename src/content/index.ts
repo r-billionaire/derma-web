@@ -1,17 +1,16 @@
 import { ClinicInfo, Service, Provider, Testimonial } from './types';
 
 export const clinicInfo: ClinicInfo = {
-  // PLACEHOLDER: Clinic name and contact info
-  name: 'ClearSkin Dermatology',
-  address: '123 Medical Plaza, Suite 400, City, ST 12345',
-  phone: '555-0123',
-  email: 'contact@clearskinderm.example',
+  name: 'Apex Dermatology Denver (U.S. Dermatology Partners)',
+  address: '125 Rampart Way Ste 220, Denver, CO 80230, United States',
+  phone: '+1 303-261-1525',
+  email: 'contact@apexdermatology.example',
   hours: [
     { label: 'Monday', value: '7:00 AM - 5:00 PM' },
     { label: 'Tuesday', value: '7:00 AM - 5:00 PM' },
     { label: 'Wednesday', value: '7:00 AM - 5:00 PM' },
     { label: 'Thursday', value: '7:00 AM - 5:00 PM' },
-    { label: 'Friday', value: '7:00 AM - 5:00 PM' },
+    { label: 'Friday', value: '7:00 AM - 4:30 PM' },
     { label: 'Saturday', value: 'Closed' },
     { label: 'Sunday', value: 'Closed' },
   ],

@@ -1,12 +1,22 @@
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Footer() {
   return (
     <footer className="border-t border-neutral bg-background px-6 py-12 mt-auto">
       <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-12">
-        <div>
-          <div className="text-lg font-serif font-bold text-foreground mb-4">
-            ClinicLogo
+        <div className="space-y-4">
+          <div className="flex items-center gap-3">
+            <Image
+              src="/logo.png"
+              alt="Apex Dermatology Logo"
+              width={32}
+              height={32}
+              className="object-contain"
+            />
+            <span className="text-lg font-serif font-bold text-foreground">
+              Apex Dermatology
+            </span>
           </div>
           <p className="text-sm text-foreground/70 font-sans leading-relaxed">
             {/* // PLACEHOLDER: Clinic description */}
@@ -33,9 +43,10 @@ export default function Footer() {
         </div>
       </div>
       <div className="max-w-7xl mx-auto mt-12 pt-8 border-t border-neutral/30 text-center text-xs font-sans text-foreground/40">
-        © {new Date().getFullYear()} Dermatology Clinic. All rights reserved.
+        © {new Date().getFullYear()} Apex Dermatology. All rights reserved.
       </div>
     </footer>
   );
 }
+
 
