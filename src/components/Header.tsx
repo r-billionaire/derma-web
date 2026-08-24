@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { getOptimizedImage } from '@/lib/imagekit';
 
 export default function Header() {
   return (
@@ -7,7 +8,7 @@ export default function Header() {
       <div className="flex items-center gap-8">
         <Link href="/" className="flex items-center gap-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-primary rounded-sm">
           <Image
-            src="/logo.png"
+            src={getOptimizedImage('logo.png', { width: 80, height: 80 })}
             alt="Apex Dermatology Logo"
             width={40}
             height={40}
@@ -40,5 +41,6 @@ export default function Header() {
     </header>
   );
 }
+
 
 
