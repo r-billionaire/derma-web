@@ -1,4 +1,4 @@
-import ImageKit from '@imagekit/javascript';
+import ImageKit from 'imagekitio-javascript';
 
 const urlEndpoint = process.env.NEXT_PUBLIC_IMAGEKIT_URL_ENDPOINT || 'https://ik.imagekit.io/rbillionaire';
 const publicKey = process.env.NEXT_PUBLIC_IMAGEKIT_PUBLIC_KEY || 'public_mBQJBvh2bjNPEzzO+slDpSY2TcM=';
