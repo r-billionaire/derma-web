@@ -29,7 +29,7 @@ client's approved copy, photos, and testimonials replace the placeholders.
 
 ## Stack
 
-- Next.js 15 (App Router) + TypeScript + Tailwind CSS
+- Next.js 16 (App Router) + React 19 + TypeScript 5 + Tailwind CSS v4
 - Database: Postgres via Supabase (free tier) - also gives a table-editor UI the
   clinic can use to see bookings in v1, without building a custom admin panel yet
 - Email confirmations: Resend, plain HTML string template - no separate templating
@@ -155,6 +155,15 @@ Rules:
 
 *(grows as they come up - add a line here the first time the model makes the same
 mistake twice, per the vibe-coding-engineer skill's pattern)*
+
+- Env var names must match `process.env.*` in code exactly. `src/lib/imagekit.ts`
+  has hardcoded fallback values, so a misnamed ImageKit var fails **silently** -
+  images still render off the fallback and nothing looks broken. Check
+  `.env.example` for the canonical names.
+- `vercel env add` defaults new vars to *sensitive*, and Vercel rejects a
+  `NEXT_PUBLIC_*` var as sensitive on Production/Preview (`invalid_visibility`).
+  Add those with `--value '...' --no-sensitive`. Piping the value over stdin is
+  also unreliable in the current CLI - use `--value`.
 
 ## Out of scope for v1
 

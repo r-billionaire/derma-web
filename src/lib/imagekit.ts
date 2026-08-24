@@ -7,18 +7,23 @@ export const imagekit = {
 };
 
 /**
- * Generates an optimized ImageKit URL
+ * Generates an optimized ImageKit URL.
+ * Transformations go in one comma-separated `tr:` segment - `tr:w-80,h-80`.
  * @param path Path to the image in ImageKit
- * @param options Transformation options (width, height, quality, etc.)
+ * @param options Transformation options (width, height, quality)
  */
 export function getOptimizedImage(path: string, options: { width?: number; height?: number; quality?: number } = {}) {
-  const { width, height, quality = 80 } = options;
-  let transformation = '';
+  const { width, height, quality } = options;
 
-  if (width) transformation += `tr:w-${width}`;
-  if (height) transformation += `tr:h-${height}`;
-  if (quality !== 80) transformation += `tr:q-${quality}`;
+  const transformation = [
+    width && `w-${width}`,
+    height && `h-${height}`,
+    quality && `q-${quality}`,
+  ]
+    .filter(Boolean)
+    .join(',');
 
-  const finalPath = transformation ? `${transformation}/${path}` : path;
-  return `${urlEndpoint}/${finalPath}`;
+  return [urlEndpoint.replace(/\/$/, ''), transformation && `tr:${transformation}`, path.replace(/^\//, '')]
+    .filter(Boolean)
+    .join('/');
 }
