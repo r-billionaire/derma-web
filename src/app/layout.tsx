@@ -3,6 +3,7 @@ import { Fraunces, Public_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { clinicInfo } from "@/content";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -21,7 +22,7 @@ const ibmPlexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dermatology Clinic",
+  title: `${clinicInfo.name} — Medical & Cosmetic Dermatology`,
   description: "Expert medical and cosmetic dermatology care.",
 };
 
