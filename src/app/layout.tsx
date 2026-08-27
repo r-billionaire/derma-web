@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { clinicInfo } from "@/content";
+import { theme } from "@/content/theme";
 
 const fraunces = Fraunces({
   variable: "--font-fraunces",
@@ -32,7 +33,16 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       lang="en"
       className={`${fraunces.variable} ${publicSans.variable} ${ibmPlexMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">
+      <body
+        className="min-h-full flex flex-col"
+        style={{
+          ['--background' as any]: theme.colors.background,
+          ['--foreground' as any]: theme.colors.foreground,
+          ['--accent-primary' as any]: theme.colors.accentPrimary,
+          ['--accent-secondary' as any]: theme.colors.accentSecondary,
+          ['--neutral' as any]: theme.colors.neutral,
+        }}
+      >
         <Header />
         <main className="flex-grow">{children}</main>
         <Footer />
