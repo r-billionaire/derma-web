@@ -1,5 +1,6 @@
 import { Resend } from 'resend';
 import { clinicInfo } from '@/content';
+import { CLINIC_TIME_ZONE } from '@/lib/clinic-time';
 
 // Resend throws from its own constructor when the key is missing, so it must be
 // built lazily - constructing it at module scope took the whole booking action
@@ -28,7 +29,7 @@ function getClient(): Resend | null {
 // Booking times are stored as instants; patients need the time at the clinic.
 // PLACEHOLDER: belongs alongside the other clinic facts in /content once the
 // real hours/timezone are confirmed.
-const CLINIC_TIMEZONE = 'America/Denver';
+const CLINIC_TIMEZONE = CLINIC_TIME_ZONE;
 
 const senderDomain = clinicInfo.email.split('@')[1];
 // Display names containing "." or "(" must be quoted per RFC 5322.

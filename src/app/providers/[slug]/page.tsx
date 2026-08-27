@@ -6,6 +6,12 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
+export async function generateStaticParams() {
+  return providers.map((provider) => ({
+    slug: provider.slug,
+  }));
+}
+
 export default async function ProviderPage({ params }: PageProps) {
   const { slug } = await params;
   const provider = providers.find((p) => p.slug === slug);

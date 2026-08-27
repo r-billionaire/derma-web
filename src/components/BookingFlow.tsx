@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { providers, services } from '@/content';
 import { calculateAvailableSlots, Slot } from '@/lib/booking';
 import {
@@ -64,9 +64,9 @@ export default function BookingFlow() {
     if (step === 'slot' && bookingData.providerId && bookingData.serviceId) {
       fetchSlots();
     }
-  }, [step, bookingData.providerId, bookingData.serviceId, selectedDay]);
+  }, [step, bookingData.providerId, bookingData.serviceId, selectedDay, fetchSlots]);
 
-  async function fetchSlots() {
+  const fetchSlots = useCallback(async () => {
     setLoadingSlots(true);
     setSlotsError(null);
     try {
@@ -82,7 +82,7 @@ export default function BookingFlow() {
     } finally {
       setLoadingSlots(false);
     }
-  }
+  }, [bookingData.providerId, bookingData.serviceId, selectedDay]);
 
   async function handleConfirm() {
     setIsSubmitting(true);
