@@ -18,31 +18,50 @@ export const clinicInfo: ClinicInfo = {
 
 export const services: Service[] = [
   {
-    id: 's1',
+    id: 'e4ef6ce8-2665-4a4d-90f1-46098dd5208f',
     name: 'Skin Cancer Screening',
     slug: 'skin-cancer-screening',
     description: 'Comprehensive full-body skin exam to detect early signs of skin cancer.',
     durationMinutes: 30,
     category: 'medical',
+    // PLACEHOLDER: Unsplash stock, not client-owned. Replace with a real clinic photo.
+    // Verified by eye: female clinician in a white coat in conversation with a seated
+    // older patient in an exam room. Authentic consultation, not a posed studio shot.
+    imageUrl:
+      'https://images.unsplash.com/photo-1631217868264-e5b90bb7e133?w=1600&q=75&auto=format&fit=crop',
+    imageAlt: 'A dermatologist in a white coat consulting with a seated patient in an exam room',
   },
   {
-    id: 's2',
+    id: '4a0487f1-204b-4b77-86fb-c9d009afd438',
     name: 'Mohs Surgery',
     slug: 'mohs-surgery',
     description: 'Precise surgical technique for treating basal cell and squamous cell carcinomas.',
     durationMinutes: 120,
     category: 'medical',
+    // PLACEHOLDER: Unsplash stock, not client-owned. Replace with a real clinic photo.
+    // Verified by eye: empty, immaculate operating room. Deliberately shows no patient,
+    // no blood and no wound - this sits on a skin-cancer page.
+    imageUrl:
+      'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1600&q=75&auto=format&fit=crop',
+    imageAlt: 'A clean, empty operating room with a surgical table beneath overhead surgical lights',
   },
   {
-    id: 's3',
+    id: '91b8b6ca-b383-4ad4-9c52-b7caac57359f',
     name: 'Chemical Peel',
     slug: 'chemical-peel',
     description: 'Exfoliating treatment to improve skin texture, tone, and clarity.',
     durationMinutes: 45,
     category: 'cosmetic',
+    // PLACEHOLDER: Unsplash stock, not client-owned. Replace with a real clinic photo.
+    // Verified by eye: practitioner applying a treatment mask with a brush. Cosmetic
+    // without tipping into day-spa imagery.
+    imageUrl:
+      'https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&q=75&auto=format&fit=crop',
+    imageAlt:
+      'A patient reclines with eyes closed while a clinician applies a facial treatment mask with a brush',
   },
   {
-    id: 's4',
+    id: '328557e4-2f6a-4469-9439-fcb583d7c3f2',
     name: 'Acne Treatment',
     slug: 'acne-treatment',
     description: 'Customized medical plan to manage and treat various forms of acne.',
@@ -53,7 +72,7 @@ export const services: Service[] = [
 
 export const providers: Provider[] = [
   {
-    id: 'p1',
+    id: '78894815-bbaa-4844-91b2-66c61d51e000',
     name: 'Dr. Jane Smith', // PLACEHOLDER: Provider name
     slug: 'dr-jane-smith',
     bio: 'Board-certified dermatologist specializing in medical and surgical dermatology with 15 years of experience.', // PLACEHOLDER: Bio
@@ -61,7 +80,7 @@ export const providers: Provider[] = [
     specialties: ['Skin Cancer Screening', 'Mohs Surgery'],
   },
   {
-    id: 'p2',
+    id: '3aa64687-9e34-424f-8344-54ef849d194f',
     name: 'Dr. Michael Chen', // PLACEHOLDER: Provider name
     slug: 'dr-michael-chen',
     bio: 'Expert in cosmetic dermatology and laser treatments, focusing on healthy, glowing skin for all ages.', // PLACEHOLDER: Bio

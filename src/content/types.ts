@@ -16,6 +16,10 @@ export interface Service {
   description: string;
   durationMinutes: number;
   category: 'medical' | 'cosmetic';
+  /** Optional editorial image. Components must render fine without it. */
+  imageUrl?: string;
+  /** Short alt text describing the image, required whenever imageUrl is set. */
+  imageAlt?: string;
 }
 
 export interface Provider {
