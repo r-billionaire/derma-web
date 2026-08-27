@@ -1,0 +1,94 @@
+{
+  "picks": [
+    {
+      "slot": "service:mohs-surgery",
+      "id": "photo-1516549655169-df83a0774514",
+      "url": "https://images.unsplash.com/photo-1516549655169-df83a0774514?w=1600&q=75&auto=format&fit=crop",
+      "depicts": "Empty, immaculate operating room: bare surgical table under twin overhead surgical lights, equipment booms and wall-mounted monitors. No patient, no blood, no legible text.",
+      "alt": "A clean, empty operating room with a surgical table beneath overhead surgical lights"
+    },
+    {
+      "slot": "service:chemical-peel",
+      "id": "photo-1570172619644-dfd03ed5d881",
+      "url": "https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&q=75&auto=format&fit=crop",
+      "depicts": "Woman reclining with eyes closed and a white headband while a practitioner in white applies a brown treatment mask to her face with a brush; no text, no branding.",
+      "alt": "A patient reclines with eyes closed while a clinician applies a facial treatment mask with a brush"
+    }
+  ],
+  "rejected": [
+    {
+      "id": "photo-1576091160550-2173dba999ef",
+      "why": "Hands with red nail polish typing on a laptop next to a stethoscope. Reads as generic medical administration, not dermatology; nothing about skin."
+    },
+    {
+      "id": "photo-1559757148-5c350d0d3c56",
+      "why": "Plastic anatomical model of a human brain. Wrong medical specialty entirely; would confuse a dermatology page."
+    },
+    {
+      "id": "photo-1622253692010-333f2da6031d",
+      "why": "Broadly smiling man in blue scrubs with arms crossed - exactly the 'smiling people in scrubs' stock look CLAUDE.md forbids. Also has legible embroidered Portuguese text on the scrubs naming a physiotherapist."
+    },
+    {
+      "id": "photo-1537368910025-700350fe46c7",
+      "why": "Man in a white blazer posing hand-on-chin against a hot pink studio backdrop. Not clinical, and the pink clashes with the site's warm off-white / forest green palette."
+    },
+    {
+      "id": "photo-1666214280557-f1b5022eb634",
+      "why": "Clinician gesturing at monitors displaying colorized CT/MRI cross-sections. Radiology, not dermatology, and the screens carry legible software UI text."
+    },
+    {
+      "id": "photo-1594824476967-48c8b964273f",
+      "why": "Smiling woman in teal scrubs, arms crossed, studio backdrop. Forbidden 'smiling in scrubs' stock look, plus legible embroidered Spanish name ('Dra. ...') and a clinic logo on the chest."
+    },
+    {
+      "id": "photo-1512290923902-8a9f81dc236c",
+      "why": "Facial treatment using glass suction/cupping cups on a reclining woman. Cupping is not a dermatological modality - an MD reviewing the site would read it as non-clinical, and it pushes the set spa-ward."
+    },
+    {
+      "id": "photo-1600334089648-b0d9d3028eb2",
+      "why": "Hot-stone massage laid along a bare back with orchid blooms. Pure day-spa imagery and partial nudity; exactly the spa skew the brief forbids."
+    },
+    {
+      "id": "photo-1620916566398-39f1143ab7be",
+      "why": "Product shot of a lotion tube with fully legible commercial branding ('Necessaire - The Body Lotion / L'Emulsion Corps'). Visible third-party brand plus foreign-language text."
+    },
+    {
+      "id": "photo-1519494026892-80bbd2d6fd0d",
+      "why": "Hospital lobby and reception desk with a large legible Spanish-language directory sign (URGENCIAS, QUIROFANO, BANCO DE SANGRE). Foreign text is unavoidable and the blue-tile interior is off-palette."
+    },
+    {
+      "id": "photo-1579684385127-1ef15d508118",
+      "why": "Eight masked, capped surgeons ringed around an overhead OR light shot from the patient's point of view. Not gruesome but the tone is wrong and frankly alarming for Mohs, which is an awake outpatient office procedure."
+    },
+    {
+      "id": "photo-1582750433449-648ed127bb54",
+      "why": "Man in a white coat wearing a green surgical mask outdoors. Good orientation and lighting, but the mask hides most of his face, so it cannot carry a 'credible clinician' portrait; also visibly pandemic-dated."
+    },
+    {
+      "id": "photo-1607779097040-26e80aa78e66",
+      "why": "Close-up of a hand with a grey, white and glitter manicure against a knit sweater. Reads as a nail salon, not a dermatology practice."
+    },
+    {
+      "id": "photo-1629909613654-28e377c37b09",
+      "why": "A dental treatment room - dental chair, handpiece unit, spittoon. Unmistakably dentistry; wrong specialty."
+    }
+  ],
+  "candidates_held": [
+    {
+      "id": "photo-1612349317150-e413f6a5b16d",
+      "note": "Male clinician, white coat, stethoscope, glasses, arms crossed, neutral grey studio backdrop, not smiling. Strong provider-portrait candidate; subject sits left-of-center so verify 4:5 centre crop."
+    },
+    {
+      "id": "photo-1584515933487-779824d29309",
+      "note": "Warm-lit close-up of two pairs of hands clasped together, wedding ring visible, real skin texture. Calm and human; possible hero, but may read as comfort/hospice care rather than dermatology."
+    },
+    {
+      "id": "photo-1631217868264-e5b90bb7e133",
+      "note": "Female clinician in a white coat holding notes, in conversation with a seated older patient in an exam room. Authentic consultation rather than posed studio. Fallback for a medical service slot; small name badge, text not legible at web size."
+    },
+    {
+      "id": "photo-1515377905703-c4788e51af15",
+      "note": "Hands dispensing drops from an amber dropper bottle into a palm, dark moody lighting. Topical-treatment read, but the amber bottle skews 'essential oils' and the dark tone fights the warm off-white palette. Weak."
+    }
+  ]
+}

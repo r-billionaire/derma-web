@@ -29,7 +29,7 @@ client's approved copy, photos, and testimonials replace the placeholders.
 
 ## Stack
 
-- Next.js 16 (App Router) + React 19 + TypeScript 5 + Tailwind CSS v4
+- Next.js 15 (App Router) + TypeScript + Tailwind CSS
 - Database: Postgres via Supabase (free tier) - also gives a table-editor UI the
   clinic can use to see bookings in v1, without building a custom admin panel yet
 - Email confirmations: Resend, plain HTML string template - no separate templating
@@ -38,6 +38,75 @@ client's approved copy, photos, and testimonials replace the placeholders.
 - Do not introduce another framework, ORM, or state-management library beyond this
   list without discussing it first - every added dependency is another place a
   smaller model can lose the thread
+
+## Available tools - use them deliberately
+
+This environment has MCP servers and plugins connected. Use them where they
+genuinely help; their availability is not a reason to skip the verification steps
+described elsewhere in this file.
+
+- **Context7 (MCP)** - pull current docs before implementing against anything
+  version-sensitive: Next.js 15 App Router conventions, the Supabase client, the
+  Resend SDK, the Motion animation library (which has renamed and changed APIs
+  across versions - don't trust memory here). This matters more than usual since
+  this project runs on a smaller model that may have stale or partial knowledge
+  of recent API shapes.
+- **Supabase MCP** - use directly for all schema and migration work in Phase 4
+  (creating the four tables, the unique constraint on `(provider_id, start_time)`,
+  any RLS policies). Don't hand-write SQL to paste into a dashboard separately -
+  run it through the MCP so it's tracked as a real migration.
+- **Motion (MCP)** - reserved for the hero's dual-path signature interaction and
+  restrained scroll-reveals only. The design system's restraint principle still
+  applies: an available animation tool is not a reason to add motion anywhere
+  that wasn't already called for above.
+- **Ponytail** - default implementation stance for this project: standard
+  library and native platform features before a new dependency, shortest correct
+  diff. This changes *how* something gets implemented, not *whether* the
+  verification and checklist steps in this file happen.
+- **Superpowers** - use its TDD workflow specifically for the booking
+  availability-calculation logic in Phase 4: write the test cases before the
+  implementation, not after. Use its verification-before-completion discipline
+  as the default across every phase, not just booking. Parallel/subagent
+  dispatch is a good fit for genuinely independent chunks (e.g. the service and
+  provider page templates in Phase 3) - not for Phase 4, which is intentionally
+  sequential and higher-risk.
+- **Code-Review / Simplify** - run at the Phase 6 checklist pass, and any time a
+  piece of the booking logic starts looking more complex than the rules
+  described above.
+- **Frontend-Design** - reinforces the restraint and quality-floor principles
+  below; it doesn't override the specific palette, type, and layout decisions
+  already locked in - those were decided deliberately so a smaller model has
+  something concrete to build against instead of an open-ended creative brief.
+
+## Model escalation - Claude Opus 5 is sometimes available
+
+Gemma 4 via Ollama stays the default for routine work - that's the budget
+decision already made. Claude Opus 5 is available occasionally, not as a
+standing upgrade, so treat it as a scarce resource to spend deliberately on the
+handful of tasks where a smaller model is most likely to miss something, per
+`vibe-coding-engineer`'s own escalation guidance:
+
+- Broad, cross-file consistency work where a smaller model tends to check the
+  files it's looking at and miss the one it isn't - e.g. an accessibility audit
+  across the whole site, or the theming extraction in Phase 11 (pulling every
+  scattered hardcoded color/font reference into one config - the risk isn't
+  writing the config, it's missing an instance).
+- A bug that resists a fix after a couple of attempts on the default model -
+  that's the signal to switch, not to keep retrying the same approach.
+- Anything touching the booking system's correctness or the RLS policies again -
+  this code has already had two rounds of silent, invisible-on-screen bugs
+  (§3.1, §3.3 of the last progress report); getting it right the first time is
+  worth spending the scarce resource on.
+
+Not worth it for: routine page-building, content wiring, small mechanical
+fixes (the `generateStaticParams` addition, the debt sweep) - save it for where
+Gemma is most likely to fall short, not for everything just because it's
+available that day.
+
+However a piece of work got done, the same verification standard in this file
+applies to it - a stronger model's output still gets clicked through, still
+gets checked at 375px, still goes through the checklist. It's less likely to
+need correction, not exempt from being checked.
 
 ## Design system - do not deviate without discussion
 
@@ -77,9 +146,24 @@ not a generic "learn more" button. Keep everything else on the page disciplined 
 quiet around this one moment.
 
 **Photography**
-No generic stock "smiling family in scrubs" imagery. Until real photos exist, use
-clearly-flagged placeholder blocks (`// PLACEHOLDER: photo of...`) rather than
-shipping generic stock as if it were final.
+No generic stock "smiling family in scrubs" imagery. For provider headshots
+specifically: **never use a real, identifiable stranger's photo as a placeholder
+for a fictional doctor** - that's not a placeholder-quality issue, it's depicting
+an actual uninvolved person as a licensed medical professional they have no
+connection to. Use a stylized initials/monogram placeholder (in the palette
+above) for any provider without an approved real photo, until one exists. For
+everything else (hero, service pages, office shots), use clearly-flagged
+placeholder blocks (`// PLACEHOLDER: photo of...`) rather than shipping generic
+stock as if it were final.
+
+When evaluating candidate stock photos (for slots where a real stock photo *is*
+appropriate - not provider headshots), do it with Gemma's native vision via
+Ollama, not a separate paid vision service - keep this on the free setup, and
+set a low visual token budget (~140) since coarse content classification
+("does this show blood, a competitor's logo, the wrong specialty") doesn't need
+fine-grained detail. Checkpoint every decision to disk immediately (not batched
+at the end) so a crash or quota limit loses at most one decision, not the whole
+run.
 
 **Non-negotiable floor**
 Responsive down to a 375px mobile viewport. Visible keyboard focus on every
@@ -140,6 +224,33 @@ Rules:
   an element/utility-based one could cancel each other out - this shows up most
   often in section spacing/padding.
 
+## Theming & multi-client reuse
+
+The booking system, page structure, and routing are permanent - the same
+functionality serves every future dermatology-clinic client, not just this one.
+What needs to swap fast per client is the visual identity. Keep this separation
+real but lightweight - don't build a multi-tenant admin system for a client base
+of one:
+
+- **Colors, fonts, logo**: consolidate into a single theme config
+  (`/content/theme.ts`) rather than scattered across `tailwind.config` and
+  component code - swapping a client's palette should mean editing one file, not
+  hunting through components. Keep the underlying design *system* (the
+  editorial layout, the restraint principles, the quality floor) fixed; only the
+  token values change per client.
+- **Images**: the working `image-manifest.json` from the imagery task becomes
+  the real, permanent per-client asset config once this build is done - not a
+  disposable checkpoint file. A new client's image set is a new manifest, not a
+  code change.
+- **Motion**: keep animation parameters (what animates, how much) defined in one
+  place rather than inline per-component, so toning motion up or down for a
+  different client's brand is a config edit.
+- This is being built now, ahead of a second confirmed client, on the bet that
+  the pattern holds - that's a real risk (the right abstraction is easier to see
+  with two real cases than one). Keep it to plain config objects, not a
+  framework - cheap to build, cheap to be wrong about, cheap to redo once a
+  second client actually shows what varies.
+
 ## How to verify a change works
 
 - `npm run dev` and manually check the actual page that changed - not just that it
@@ -153,17 +264,31 @@ Rules:
 
 ## Known gotchas for this project
 
-*(grows as they come up - add a line here the first time the model makes the same
-mistake twice, per the vibe-coding-engineer skill's pattern)*
-
-- Env var names must match `process.env.*` in code exactly. `src/lib/imagekit.ts`
-  has hardcoded fallback values, so a misnamed ImageKit var fails **silently** -
-  images still render off the fallback and nothing looks broken. Check
-  `.env.example` for the canonical names.
-- `vercel env add` defaults new vars to *sensitive*, and Vercel rejects a
-  `NEXT_PUBLIC_*` var as sensitive on Production/Preview (`invalid_visibility`).
-  Add those with `--value '...' --no-sensitive`. Piping the value over stdin is
-  also unreliable in the current CLI - use `--value`.
+- `availability` stores bare wall-clock hours with no timezone. Never derive a
+  real timestamp from a visitor's local timezone - always interpret clinic hours
+  in the clinic's own timezone via `src/lib/clinic-time.ts`. A "calendar day at
+  the clinic" is not the same type as "a moment in time" - treating one as the
+  other is how this broke the first time.
+- Under RLS with `appointments` set to insert-only, reading that table returns
+  **zero rows, not an error** - a naive availability check would conclude
+  nothing is ever booked. Booked times must come from the dedicated
+  `get_booked_slots` function (returns only start/end, never patient columns),
+  never a direct table read.
+- Never ask the database to read back a row immediately after inserting it into
+  a table the current role can't read - it will fail. The browser already has
+  every detail it needs from the insert itself.
+- A client that needs an API key (Resend, etc.) must be constructed lazily and
+  degrade gracefully when the key is absent - constructing it eagerly at module
+  load time means a missing key crashes everything that imports the module, not
+  just the feature that needed the key.
+- Never trust a time, price, or duration sent by the browser for anything that
+  writes to the database - re-derive it server-side from the same source of
+  truth used to display it. The unique constraint is the actual double-booking
+  safeguard; server-side re-derivation closes the gap before that constraint
+  ever gets tested.
+- Thrown errors from a Next.js Server Action are redacted to a generic message
+  in production - return typed results instead if the real message needs to
+  reach the user.
 
 ## Out of scope for v1
 
@@ -171,5 +296,6 @@ mistake twice, per the vibe-coding-engineer skill's pattern)*
 - Patient portal / medical records access
 - Multi-language support
 - A custom admin dashboard (use Supabase's table editor for now)
-- Generalizing this into a formal multi-tenant template - revisit once there's a
-  second real client to generalize from, not before
+- A formal multi-tenant system (per-client databases, an onboarding UI, a
+  client-facing theme editor) - the lightweight config-based theming above is
+  in scope now; a real multi-tenant *system* still waits for a second client
