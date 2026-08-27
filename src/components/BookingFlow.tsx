@@ -60,12 +60,6 @@ export default function BookingFlow() {
     else if (step === 'confirm') setStep('patient');
   };
 
-  useEffect(() => {
-    if (step === 'slot' && bookingData.providerId && bookingData.serviceId) {
-      fetchSlots();
-    }
-  }, [step, bookingData.providerId, bookingData.serviceId, selectedDay, fetchSlots]);
-
   const fetchSlots = useCallback(async () => {
     setLoadingSlots(true);
     setSlotsError(null);
@@ -83,6 +77,12 @@ export default function BookingFlow() {
       setLoadingSlots(false);
     }
   }, [bookingData.providerId, bookingData.serviceId, selectedDay]);
+
+  useEffect(() => {
+    if (step === 'slot' && bookingData.providerId && bookingData.serviceId) {
+      fetchSlots();
+    }
+  }, [step, bookingData.providerId, bookingData.serviceId, selectedDay, fetchSlots]);
 
   async function handleConfirm() {
     setIsSubmitting(true);

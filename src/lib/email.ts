@@ -81,10 +81,10 @@ export async function sendBookingConfirmation(
       subject: `Appointment Confirmed - ${clinicInfo.name}`,
       html: `
         <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #eee;">
-          <h1 style={`color: ${theme.colors.accentPrimary};`}>Appointment Confirmed</h1>
+          <h1 style="color: ${theme.colors.accentPrimary};">Appointment Confirmed</h1>
           <p>Hello ${escapeHtml(patientName)},</p>
           <p>Your appointment for <strong>${escapeHtml(serviceName)}</strong> with <strong>${escapeHtml(providerName)}</strong> has been scheduled.</p>
-          <div style={`background: ${theme.colors.background}; padding: 15px; border-radius: 4px; margin: 20px 0;`}>
+          <div style="background: ${theme.colors.background}; padding: 15px; border-radius: 4px; margin: 20px 0;">
             <p><strong>Date &amp; Time:</strong> ${escapeHtml(when)}</p>
             <p><strong>Location:</strong> ${escapeHtml(clinicInfo.address)}</p>
           </div>
