@@ -1,68 +1,86 @@
 import { supabase } from './supabase';
-import { addMinutes, format, parse, isAfter, startOfDay, endOfDay } from 'date-fns';
+import { addMinutes, isAfter } from 'date-fns';
+import { clinicInstant, clinicWeekday } from './clinic-time';
 
 export interface Slot {
   start: Date;
   end: Date;
 }
 
+/** Minimum-notice buffer: nothing bookable inside the next 2 hours. */
+const MIN_NOTICE_MINUTES = 120;
+
+interface BookedSlot {
+  start_time: string;
+  end_time: string;
+}
+
+/**
+ * Bookable slots = the provider's recurring availability for that weekday,
+ * minus already-booked appointments, minus the 2-hour minimum-notice buffer,
+ * sliced by the service duration.
+ *
+ * `dayISO` is a calendar day (`yyyy-MM-dd`) at the clinic - deliberately a day
+ * rather than a `Date`, because "the 3rd of September at the clinic" is not an
+ * instant and treating it as one is how slots end up on the wrong day. Clinic
+ * hours are interpreted in the clinic's timezone, so this returns the same
+ * instants whether it runs in the browser or on the server.
+ *
+ * Throws on a database error rather than returning `[]`, so a failure is not
+ * silently indistinguishable from "fully booked".
+ */
 export async function calculateAvailableSlots(
   providerId: string,
   durationMinutes: number,
-  date: Date
+  dayISO: string
 ): Promise<Slot[]> {
-  const dayOfWeek = date.getDay(); // 0 = Sunday
-  const dayStart = startOfDay(date);
-  const dayEnd = endOfDay(date);
-
-  // 1. Get recurring availability for this provider on this day
-  const { data: availability, error: availError } = await supabase
+  // A provider may have zero rows for a weekday (closed) or several (e.g. a
+  // split morning/afternoon shift). Honour all of them - `.single()` used to
+  // throw in both cases.
+  const { data: windows, error: availError } = await supabase
     .from('availability')
     .select('start_time, end_time')
     .eq('provider_id', providerId)
-    .eq('day_of_week', dayOfWeek)
-    .single();
+    .eq('day_of_week', clinicWeekday(dayISO))
+    .order('start_time');
 
-  if (availError || !availability) return [];
+  if (availError) throw availError;
+  if (!windows || windows.length === 0) return []; // closed that day
 
-  // Convert HH:mm:ss to Date objects for the specific date
-  const windowStart = parse(availability.start_time, 'HH:mm:ss', dayStart);
-  const windowEnd = parse(availability.end_time, 'HH:mm:ss', dayStart);
+  // `appointments` has no public SELECT policy (it holds patient contact
+  // details and the anon key ships in the browser bundle). Selecting the table
+  // would return zero rows and make every slot look free, so booked times come
+  // from a SECURITY DEFINER function that exposes times only.
+  const { data: booked, error: bookedError } = await supabase.rpc('get_booked_slots', {
+    p_provider_id: providerId,
+    p_day: dayISO,
+  });
 
-  // 2. Get existing appointments for this provider on this date
-  const { data: appointments, error: apptError } = await supabase
-    .from('appointments')
-    .select('start_time, end_time')
-    .eq('provider_id', providerId)
-    .gte('start_time', dayStart.toISOString())
-    .lte('start_time', dayEnd.toISOString());
+  if (bookedError) throw bookedError;
 
-  if (apptError) return [];
+  const busy = ((booked ?? []) as BookedSlot[]).map((b) => ({
+    start: new Date(b.start_time),
+    end: new Date(b.end_time),
+  }));
 
-  // 3. Generate all possible slots in the window
+  const noticeCutoff = addMinutes(new Date(), MIN_NOTICE_MINUTES);
   const slots: Slot[] = [];
-  let current = windowStart;
 
-  while (addMinutes(current, durationMinutes) <= windowEnd) {
-    const slotEnd = addMinutes(current, durationMinutes);
+  for (const window of windows) {
+    const windowEnd = clinicInstant(dayISO, window.end_time);
+    let start = clinicInstant(dayISO, window.start_time);
 
-    // Check if this slot overlaps with any existing appointment
-    const isOverlapping = appointments.some((appt) => {
-      const apptStart = new Date(appt.start_time);
-      const apptEnd = new Date(appt.end_time);
-      return current < apptEnd && slotEnd > apptStart;
-    });
+    while (addMinutes(start, durationMinutes) <= windowEnd) {
+      const end = addMinutes(start, durationMinutes);
+      const overlapsBooking = busy.some((b) => start < b.end && end > b.start);
 
-    if (!isOverlapping) {
-      slots.push({ start: current, end: slotEnd });
+      if (!overlapsBooking && isAfter(start, noticeCutoff)) {
+        slots.push({ start, end });
+      }
+
+      start = end;
     }
-
-    current = addMinutes(current, durationMinutes);
   }
 
-  // 4. Apply minimum-notice buffer (no booking within the next 2 hours)
-  const now = new Date();
-  const bufferEnd = addMinutes(now, 120);
-
-  return slots.filter((slot) => isAfter(slot.start, bufferEnd));
+  return slots;
 }
